@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+        <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
+        <edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="MyService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <EntityContainer Name="EntityContainer">
+                <EntitySet Name="Teachers" EntityType="MyService.Teachers">
+                    <NavigationPropertyBinding Path="school" Target="Schools"/>
+                    <NavigationPropertyBinding Path="SiblingEntity" Target="Teachers"/>
+                </EntitySet>
+                <EntitySet Name="Schools" EntityType="MyService.Schools"/>
+            </EntityContainer>
+            <EntityType Name="Teachers">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                    <PropertyRef Name="IsActiveEntity"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="name" Type="Edm.String" MaxLength="50"/>
+                <NavigationProperty Name="school" Type="MyService.Schools">
+                    <ReferentialConstraint Property="school_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="school_ID" Type="Edm.Guid"/>
+                <Property Name="schoolName" Type="Edm.String" MaxLength="50"/>
+                <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="true"/>
+                <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+                <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+                <NavigationProperty Name="DraftAdministrativeData" Type="MyService.DraftAdministrativeData" ContainsTarget="true"/>
+                <NavigationProperty Name="SiblingEntity" Type="MyService.Teachers"/>
+            </EntityType>
+            <EntityType Name="Schools">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="schoolName" Type="Edm.String" MaxLength="50"/>
+            </EntityType>
+            <EntityType Name="DraftAdministrativeData">
+                <Key>
+                    <PropertyRef Name="DraftUUID"/>
+                </Key>
+                <Property Name="DraftUUID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="CreationDateTime" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="CreatedByUser" Type="Edm.String" MaxLength="256"/>
+                <Property Name="DraftIsCreatedByMe" Type="Edm.Boolean"/>
+                <Property Name="LastChangeDateTime" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="LastChangedByUser" Type="Edm.String" MaxLength="256"/>
+                <Property Name="InProcessByUser" Type="Edm.String" MaxLength="256"/>
+                <Property Name="DraftIsProcessedByMe" Type="Edm.Boolean"/>
+            </EntityType>
+            <Action Name="draftPrepare" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="MyService.Teachers"/>
+                <Parameter Name="SideEffectsQualifier" Type="Edm.String"/>
+                <ReturnType Type="MyService.Teachers"/>
+            </Action>
+            <Action Name="draftActivate" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="MyService.Teachers"/>
+                <ReturnType Type="MyService.Teachers"/>
+            </Action>
+            <Action Name="draftEdit" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="MyService.Teachers"/>
+                <Parameter Name="PreserveChanges" Type="Edm.Boolean"/>
+                <ReturnType Type="MyService.Teachers"/>
+            </Action>
+            <Annotations Target="MyService.EntityContainer/Teachers">
+                <Annotation Term="Common.DraftRoot">
+                    <Record Type="Common.DraftRootType">
+                        <PropertyValue Property="ActivationAction" String="MyService.draftActivate"/>
+                        <PropertyValue Property="EditAction" String="MyService.draftEdit"/>
+                        <PropertyValue Property="PreparationAction" String="MyService.draftPrepare"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="MyService.Teachers/ID">
+                <Annotation Term="UI.Hidden" Bool="true"/>
+            </Annotations>
+            <Annotations Target="MyService.Teachers/name">
+                <Annotation Term="Common.Label" String="{i18n>teachersName}"/>
+                </Annotations>
+                <Annotations Target="MyService.Teachers/school">
+                    <Annotation Term="UI.Hidden" Bool="true"/>
+                </Annotations>
+                <Annotations Target="MyService.Teachers/school_ID">
+                    <Annotation Term="UI.Hidden" Bool="true"/>
+                </Annotations>
+                <Annotations Target="MyService.Teachers/schoolName">
+                    <Annotation Term="Common.Text" Path="school/schoolName">
+                        <Annotation Term="UI.TextArrangement" EnumMember="UI.TextArrangementType/TextOnly"/>
+                    </Annotation>
+                    <Annotation Term="Common.ValueListWithFixedValues" Bool="true"/>
+                    <Annotation Term="Common.ValueList">
+                        <Record Type="Common.ValueListType">
+                            <PropertyValue Property="CollectionPath" String="Schools"/>
+                            <PropertyValue Property="Parameters">
+                                <Collection>
+                                    <Record Type="Common.ValueListParameterInOut">
+                                        <PropertyValue Property="LocalDataProperty" PropertyPath="school_ID"/>
+                                        <PropertyValue Property="ValueListProperty" String="ID"/>
+                                    </Record>
+                                    <Record Type="Common.ValueListParameterDisplayOnly">
+                                        <PropertyValue Property="ValueListProperty" String="schoolName"/>
+                                    </Record>
+                                </Collection>
+                            </PropertyValue>
+                        </Record>
+                    </Annotation>
+                    <Annotation Term="Common.Label" String="{i18n>schoolsName}"/>
+                    </Annotations>
+                    <Annotations Target="MyService.Teachers/IsActiveEntity">
+                        <Annotation Term="UI.Hidden" Bool="true"/>
+                    </Annotations>
+                    <Annotations Target="MyService.Teachers/HasActiveEntity">
+                        <Annotation Term="UI.Hidden" Bool="true"/>
+                    </Annotations>
+                    <Annotations Target="MyService.Teachers/HasDraftEntity">
+                        <Annotation Term="UI.Hidden" Bool="true"/>
+                    </Annotations>
+                    <Annotations Target="MyService.Teachers/DraftAdministrativeData">
+                        <Annotation Term="UI.Hidden" Bool="true"/>
+                    </Annotations>
+                    <Annotations Target="MyService.Schools/ID">
+                        <Annotation Term="UI.Hidden" Bool="true"/>
+                    </Annotations>
+                    <Annotations Target="MyService.Schools/schoolName">
+                        <Annotation Term="Common.Label" String="{i18n>schoolsName}"/>
+                        </Annotations>
+                        <Annotations Target="MyService.DraftAdministrativeData">
+                            <Annotation Term="Common.Label" String="{i18n>Draft_DraftAdministrativeData}"/>
+                            </Annotations>
+                            <Annotations Target="MyService.DraftAdministrativeData/DraftUUID">
+                                <Annotation Term="UI.Hidden" Bool="true"/>
+                                <Annotation Term="Common.Label" String="{i18n>Draft_DraftUUID}"/>
+                                </Annotations>
+                                <Annotations Target="MyService.DraftAdministrativeData/CreationDateTime">
+                                    <Annotation Term="Common.Label" String="{i18n>Draft_CreationDateTime}"/>
+                                    </Annotations>
+                                    <Annotations Target="MyService.DraftAdministrativeData/CreatedByUser">
+                                        <Annotation Term="Common.Label" String="{i18n>Draft_CreatedByUser}"/>
+                                        </Annotations>
+                                        <Annotations Target="MyService.DraftAdministrativeData/DraftIsCreatedByMe">
+                                            <Annotation Term="UI.Hidden" Bool="true"/>
+                                            <Annotation Term="Common.Label" String="{i18n>Draft_DraftIsCreatedByMe}"/>
+                                            </Annotations>
+                                            <Annotations Target="MyService.DraftAdministrativeData/LastChangeDateTime">
+                                                <Annotation Term="Common.Label" String="{i18n>Draft_LastChangeDateTime}"/>
+                                                </Annotations>
+                                                <Annotations Target="MyService.DraftAdministrativeData/LastChangedByUser">
+                                                    <Annotation Term="Common.Label" String="{i18n>Draft_LastChangedByUser}"/>
+                                                    </Annotations>
+                                                    <Annotations Target="MyService.DraftAdministrativeData/InProcessByUser">
+                                                        <Annotation Term="Common.Label" String="{i18n>Draft_InProcessByUser}"/>
+                                                        </Annotations>
+                                                        <Annotations Target="MyService.DraftAdministrativeData/DraftIsProcessedByMe">
+                                                            <Annotation Term="UI.Hidden" Bool="true"/>
+                                                            <Annotation Term="Common.Label" String="{i18n>Draft_DraftIsProcessedByMe}"/>
+                                                            </Annotations>
+                                                        </Schema>
+                                                    </edmx:DataServices>
+                                                </edmx:Edmx>
