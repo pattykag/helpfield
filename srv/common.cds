@@ -2,8 +2,8 @@ using MyService as service from './teachers-srv';
 
 annotate service.Teachers with {
     schoolName @Common : {
-        Text            : school.schoolName,
-        TextArrangement : #TextOnly,
+        // Text            : school.schoolName,
+        // TextArrangement : #TextOnly,
         ValueListWithFixedValues,
         ValueList : {
             $Type : 'Common.ValueListType',
@@ -11,12 +11,9 @@ annotate service.Teachers with {
             Parameters     : [
                 {
                     $Type             : 'Common.ValueListParameterInOut',
-                    LocalDataProperty : 'school_ID',
-                    ValueListProperty : 'ID'
-                },
-                {
-                    $Type             : 'Common.ValueListParameterDisplayOnly',
-                    ValueListProperty : 'schoolName'
+                    LocalDataProperty : 'schoolName',
+                    ValueListProperty : 'schoolName',
+                    
                 }
             ]
         },
