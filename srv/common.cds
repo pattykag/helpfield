@@ -4,42 +4,18 @@ annotate service.Teachers with {
     schoolName @Common : {
         // Text            : school.schoolName,
         // TextArrangement : #TextOnly,
-        ValueListWithFixedValues,
+        ValueListWithFixedValues, //Instead of dialog box, the value help is a dropdown
         ValueList : {
             $Type : 'Common.ValueListType',
+            Label          : '{i18n>schoolName}',
             CollectionPath : 'Schools',
             Parameters     : [
                 {
                     $Type             : 'Common.ValueListParameterInOut',
-                    LocalDataProperty : 'schoolName',
-                    ValueListProperty : 'schoolName',
-                    
+                    LocalDataProperty : 'school_schoolName',
+                    ValueListProperty : schoolName,                    
                 }
             ]
-        },
-    
-        // ValueList                : {
-        //     $Type          : 'Common.ValueListType',
-        //     CollectionPath : 'Schools',
-        //     Parameters     : [
-        //         {
-        //             $Type             : 'Common.ValueListParameterInOut',
-        //             LocalDataProperty : 'school_ID',
-        //             ValueListProperty : 'ID'
-        //         },
-        //         {
-        //             $Type             : 'Common.ValueListParameterDisplayOnly',
-        //             ValueListProperty : 'schoolName'
-        //         }
-        //     ]
-        // },
-        // ValueListWithFixedValues : false
+        }
     }
 };
-
-
-// {
-//     $Type             : 'Common.ValueListParameterInOut',
-//     LocalDataProperty : name,
-//     ValueListProperty : 'schoolName'
-// },

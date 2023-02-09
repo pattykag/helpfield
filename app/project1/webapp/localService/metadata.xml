@@ -26,9 +26,9 @@
                 <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
                 <Property Name="name" Type="Edm.String" MaxLength="50"/>
                 <NavigationProperty Name="school" Type="MyService.Schools">
-                    <ReferentialConstraint Property="school_ID" ReferencedProperty="ID"/>
+                    <ReferentialConstraint Property="school_schoolName" ReferencedProperty="schoolName"/>
                 </NavigationProperty>
-                <Property Name="school_ID" Type="Edm.Guid"/>
+                <Property Name="school_schoolName" Type="Edm.String" MaxLength="50"/>
                 <Property Name="schoolName" Type="Edm.String" MaxLength="50"/>
                 <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="true"/>
                 <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
@@ -38,10 +38,9 @@
             </EntityType>
             <EntityType Name="Schools">
                 <Key>
-                    <PropertyRef Name="ID"/>
+                    <PropertyRef Name="schoolName"/>
                 </Key>
-                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
-                <Property Name="schoolName" Type="Edm.String" MaxLength="50"/>
+                <Property Name="schoolName" Type="Edm.String" MaxLength="50" Nullable="false"/>
             </EntityType>
             <EntityType Name="DraftAdministrativeData">
                 <Key>
@@ -88,80 +87,72 @@
                 <Annotations Target="MyService.Teachers/school">
                     <Annotation Term="UI.Hidden" Bool="true"/>
                 </Annotations>
-                <Annotations Target="MyService.Teachers/school_ID">
+                <Annotations Target="MyService.Teachers/school_schoolName">
                     <Annotation Term="UI.Hidden" Bool="true"/>
                 </Annotations>
                 <Annotations Target="MyService.Teachers/schoolName">
-                    <Annotation Term="Common.Text" Path="school/schoolName">
-                        <Annotation Term="UI.TextArrangement" EnumMember="UI.TextArrangementType/TextOnly"/>
-                    </Annotation>
                     <Annotation Term="Common.ValueListWithFixedValues" Bool="true"/>
                     <Annotation Term="Common.ValueList">
                         <Record Type="Common.ValueListType">
-                            <PropertyValue Property="CollectionPath" String="Schools"/>
-                            <PropertyValue Property="Parameters">
-                                <Collection>
-                                    <Record Type="Common.ValueListParameterInOut">
-                                        <PropertyValue Property="LocalDataProperty" PropertyPath="school_ID"/>
-                                        <PropertyValue Property="ValueListProperty" String="ID"/>
-                                    </Record>
-                                    <Record Type="Common.ValueListParameterDisplayOnly">
-                                        <PropertyValue Property="ValueListProperty" String="schoolName"/>
-                                    </Record>
-                                </Collection>
-                            </PropertyValue>
-                        </Record>
-                    </Annotation>
-                    <Annotation Term="Common.Label" String="{i18n>schoolsName}"/>
-                    </Annotations>
-                    <Annotations Target="MyService.Teachers/IsActiveEntity">
-                        <Annotation Term="UI.Hidden" Bool="true"/>
-                    </Annotations>
-                    <Annotations Target="MyService.Teachers/HasActiveEntity">
-                        <Annotation Term="UI.Hidden" Bool="true"/>
-                    </Annotations>
-                    <Annotations Target="MyService.Teachers/HasDraftEntity">
-                        <Annotation Term="UI.Hidden" Bool="true"/>
-                    </Annotations>
-                    <Annotations Target="MyService.Teachers/DraftAdministrativeData">
-                        <Annotation Term="UI.Hidden" Bool="true"/>
-                    </Annotations>
-                    <Annotations Target="MyService.Schools/ID">
-                        <Annotation Term="UI.Hidden" Bool="true"/>
-                    </Annotations>
-                    <Annotations Target="MyService.Schools/schoolName">
+                            <PropertyValue Property="Label" String="{i18n>schoolName}"/>
+                                <PropertyValue Property="CollectionPath" String="Schools"/>
+                                <PropertyValue Property="Parameters">
+                                    <Collection>
+                                        <Record Type="Common.ValueListParameterInOut">
+                                            <PropertyValue Property="LocalDataProperty" PropertyPath="school_schoolName"/>
+                                            <PropertyValue Property="ValueListProperty" Path="schoolName"/>
+                                        </Record>
+                                    </Collection>
+                                </PropertyValue>
+                            </Record>
+                        </Annotation>
                         <Annotation Term="Common.Label" String="{i18n>schoolsName}"/>
                         </Annotations>
-                        <Annotations Target="MyService.DraftAdministrativeData">
-                            <Annotation Term="Common.Label" String="{i18n>Draft_DraftAdministrativeData}"/>
+                        <Annotations Target="MyService.Teachers/IsActiveEntity">
+                            <Annotation Term="UI.Hidden" Bool="true"/>
+                        </Annotations>
+                        <Annotations Target="MyService.Teachers/HasActiveEntity">
+                            <Annotation Term="UI.Hidden" Bool="true"/>
+                        </Annotations>
+                        <Annotations Target="MyService.Teachers/HasDraftEntity">
+                            <Annotation Term="UI.Hidden" Bool="true"/>
+                        </Annotations>
+                        <Annotations Target="MyService.Teachers/DraftAdministrativeData">
+                            <Annotation Term="UI.Hidden" Bool="true"/>
+                        </Annotations>
+                        <Annotations Target="MyService.Schools/schoolName">
+                            <Annotation Term="Common.Label" String="{i18n>schoolsName}"/>
                             </Annotations>
-                            <Annotations Target="MyService.DraftAdministrativeData/DraftUUID">
-                                <Annotation Term="UI.Hidden" Bool="true"/>
-                                <Annotation Term="Common.Label" String="{i18n>Draft_DraftUUID}"/>
+                            <Annotations Target="MyService.DraftAdministrativeData">
+                                <Annotation Term="Common.Label" String="{i18n>Draft_DraftAdministrativeData}"/>
                                 </Annotations>
-                                <Annotations Target="MyService.DraftAdministrativeData/CreationDateTime">
-                                    <Annotation Term="Common.Label" String="{i18n>Draft_CreationDateTime}"/>
+                                <Annotations Target="MyService.DraftAdministrativeData/DraftUUID">
+                                    <Annotation Term="UI.Hidden" Bool="true"/>
+                                    <Annotation Term="Common.Label" String="{i18n>Draft_DraftUUID}"/>
                                     </Annotations>
-                                    <Annotations Target="MyService.DraftAdministrativeData/CreatedByUser">
-                                        <Annotation Term="Common.Label" String="{i18n>Draft_CreatedByUser}"/>
+                                    <Annotations Target="MyService.DraftAdministrativeData/CreationDateTime">
+                                        <Annotation Term="Common.Label" String="{i18n>Draft_CreationDateTime}"/>
                                         </Annotations>
-                                        <Annotations Target="MyService.DraftAdministrativeData/DraftIsCreatedByMe">
-                                            <Annotation Term="UI.Hidden" Bool="true"/>
-                                            <Annotation Term="Common.Label" String="{i18n>Draft_DraftIsCreatedByMe}"/>
+                                        <Annotations Target="MyService.DraftAdministrativeData/CreatedByUser">
+                                            <Annotation Term="Common.Label" String="{i18n>Draft_CreatedByUser}"/>
                                             </Annotations>
-                                            <Annotations Target="MyService.DraftAdministrativeData/LastChangeDateTime">
-                                                <Annotation Term="Common.Label" String="{i18n>Draft_LastChangeDateTime}"/>
+                                            <Annotations Target="MyService.DraftAdministrativeData/DraftIsCreatedByMe">
+                                                <Annotation Term="UI.Hidden" Bool="true"/>
+                                                <Annotation Term="Common.Label" String="{i18n>Draft_DraftIsCreatedByMe}"/>
                                                 </Annotations>
-                                                <Annotations Target="MyService.DraftAdministrativeData/LastChangedByUser">
-                                                    <Annotation Term="Common.Label" String="{i18n>Draft_LastChangedByUser}"/>
+                                                <Annotations Target="MyService.DraftAdministrativeData/LastChangeDateTime">
+                                                    <Annotation Term="Common.Label" String="{i18n>Draft_LastChangeDateTime}"/>
                                                     </Annotations>
-                                                    <Annotations Target="MyService.DraftAdministrativeData/InProcessByUser">
-                                                        <Annotation Term="Common.Label" String="{i18n>Draft_InProcessByUser}"/>
+                                                    <Annotations Target="MyService.DraftAdministrativeData/LastChangedByUser">
+                                                        <Annotation Term="Common.Label" String="{i18n>Draft_LastChangedByUser}"/>
                                                         </Annotations>
-                                                        <Annotations Target="MyService.DraftAdministrativeData/DraftIsProcessedByMe">
-                                                            <Annotation Term="UI.Hidden" Bool="true"/>
-                                                            <Annotation Term="Common.Label" String="{i18n>Draft_DraftIsProcessedByMe}"/>
+                                                        <Annotations Target="MyService.DraftAdministrativeData/InProcessByUser">
+                                                            <Annotation Term="Common.Label" String="{i18n>Draft_InProcessByUser}"/>
                                                             </Annotations>
-                                                        </Schema>
-                                                    </edmx:DataServices>
-                                                </edmx:Edmx>
+                                                            <Annotations Target="MyService.DraftAdministrativeData/DraftIsProcessedByMe">
+                                                                <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                <Annotation Term="Common.Label" String="{i18n>Draft_DraftIsProcessedByMe}"/>
+                                                                </Annotations>
+                                                            </Schema>
+                                                        </edmx:DataServices>
+                                                    </edmx:Edmx>
