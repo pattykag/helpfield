@@ -15,7 +15,8 @@
   },
   "scripts": {
     "start": "cds run",
-    "watch-project1": "cds watch --open project1/webapp/index.html?sap-ui-xx-viewCache=false"
+    "watch-project1": "cds watch --open project1/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-teachers": "cds watch --open teachers/webapp/index.html?sap-ui-xx-viewCache=false"
   },
   "engines": {
     "node": "^16.15"
@@ -61,6 +62,7 @@
     "app/project1",
     "app/project1",
     "app/project1",
-    "app/project1"
+    "app/project1",
+    "app/teachers"
   ]
 }
