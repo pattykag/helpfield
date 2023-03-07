@@ -11,7 +11,7 @@ annotate MyService.Teachers with {
 annotate MyService.Schools with {
     ID         @(
         UI.Hidden,
-        Common : {Text : schoolName}
+        Common : {Text : 'schoolName'}
     );
     schoolName @title : '{i18n>schoolName}'
 };
