@@ -73,3 +73,5 @@ annotate MyService.Teachers with {
         },
     })
 }
+
+using from './helpproject/annotations';

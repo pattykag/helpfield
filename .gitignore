@@ -29,3 +29,7 @@ mta_archives/
 # IDEs
 # .vscode
 # .idea
+
+# custom
+resources/
+app/helpproject/dist

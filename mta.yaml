@@ -1,0 +1,136 @@
+_schema-version: "3.1"
+ID: help
+description: A simple CAP project.
+version: 1.0.0
+modules:
+- name: help-srv
+  type: nodejs
+  path: gen/srv
+  requires:
+  - name: help-db
+  - name: help-auth
+  provides:
+  - name: srv-api
+    properties:
+      srv-url: ${default-url}
+  parameters:
+    buildpack: nodejs_buildpack
+  build-parameters:
+    builder: npm-ci
+- name: help-db-deployer
+  type: hdb
+  path: gen/db
+  requires:
+  - name: help-db
+  parameters:
+    buildpack: nodejs_buildpack
+- name: help-destination-content
+  type: com.sap.application.content
+  requires:
+  - name: help-destination-service
+    parameters:
+      content-target: true
+  - name: help_html_repo_host
+    parameters:
+      service-key:
+        name: help_html_repo_host-key
+  - name: help-auth
+    parameters:
+      service-key:
+        name: help-auth-key
+  parameters:
+    content:
+      instance:
+        destinations:
+        - Name: fieldroute_help_html_repo_host
+          ServiceInstanceName: help-html5-app-host-service
+          ServiceKeyName: help_html_repo_host-key
+          sap.cloud.service: fieldroute
+        - Authentication: OAuth2UserTokenExchange
+          Name: fieldroute_help_auth
+          ServiceInstanceName: help-auth
+          ServiceKeyName: help-auth-key
+          sap.cloud.service: fieldroute
+        existing_destinations_policy: ignore
+  build-parameters:
+    no-source: true
+- name: help-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: help_html_repo_host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - nshelphelpproject.zip
+      name: nshelphelpproject
+      target-path: resources/
+- name: nshelphelpproject
+  type: html5
+  path: app/helpproject
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+resources:
+- name: help-db
+  type: com.sap.xs.hdi-container
+  parameters:
+    service: hana
+    service-plan: hdi-shared
+- name: help-auth
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      tenant-mode: dedicated
+      xsappname: help-${org}-${space}
+    path: ./xs-security.json
+    service: xsuaa
+    service-plan: application
+- name: help-destination-service
+  type: org.cloudfoundry.managed-service
+  requires:
+    - name: srv-api
+  parameters:
+    config:
+      HTML5Runtime_enabled: true
+      init_data:
+        instance:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          - Authentication: NoAuthentication
+            Name: help-dest-srv
+            ProxyType: Internet
+            Type: HTTP
+            URL: ~{srv-api/srv-url}
+            HTML5.ForwardAuthToken: true
+            HTML5.DynamicDestination: true
+          existing_destinations_policy: update
+      version: 1.0.0
+    service: destination
+    service-name: help-destination-service
+    service-plan: lite
+- name: help_html_repo_host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: help-html5-app-host-service
+    service-plan: app-host
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+  - builder: custom
+    commands:
+    - npx -p @sap/cds-dk cds build --production

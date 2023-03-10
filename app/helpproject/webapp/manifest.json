@@ -1,7 +1,7 @@
 {
     "_version": "1.49.0",
     "sap.app": {
-        "id": "ns.teachers",
+        "id": "nshelp.helpproject",
         "type": "application",
         "i18n": "i18n/i18n.properties",
         "applicationVersion": {
@@ -12,8 +12,8 @@
         "resources": "resources.json",
         "sourceTemplate": {
             "id": "@sap/generator-fiori:lrop",
-            "version": "1.8.6",
-            "toolsId": "3a79ba2c-8a64-4219-bd63-7728182a5e58"
+            "version": "1.9.1",
+            "toolsId": "77f397d8-96bd-4154-9050-20ca496c17e3"
         },
         "dataSources": {
             "mainService": {
@@ -46,13 +46,12 @@
     "sap.ui5": {
         "flexEnabled": true,
         "dependencies": {
-            "minUI5Version": "1.110.1",
+            "minUI5Version": "1.111.1",
             "libs": {
                 "sap.m": {},
                 "sap.ui.core": {},
                 "sap.ushell": {},
-                "sap.fe.templates": {},
-                "sap.f": {}
+                "sap.fe.templates": {}
             }
         },
         "contentDensities": {
@@ -63,7 +62,7 @@
             "i18n": {
                 "type": "sap.ui.model.resource.ResourceModel",
                 "settings": {
-                    "bundleName": "ns.teachers.i18n.i18n"
+                    "bundleName": "nshelp.helpproject.i18n.i18n"
                 }
             },
             "": {
@@ -85,21 +84,17 @@
             "css": []
         },
         "routing": {
+            "config": {},
             "routes": [
                 {
                     "pattern": ":?query:",
                     "name": "TeachersList",
-                    "target": [
-                        "TeachersList"
-                    ]
+                    "target": "TeachersList"
                 },
                 {
                     "pattern": "Teachers({key}):?query:",
                     "name": "TeachersObjectPage",
-                    "target": [
-                        "TeachersList",
-                        "TeachersObjectPage"
-                    ]
+                    "target": "TeachersObjectPage"
                 }
             ],
             "targets": {
@@ -117,12 +112,9 @@
                                         "route": "TeachersObjectPage"
                                     }
                                 }
-                            },
-                            "initialLoad": "Enabled"
+                            }
                         }
-                    },
-                    "controlAggregation": "beginColumnPages",
-                    "contextPattern": ""
+                    }
                 },
                 "TeachersObjectPage": {
                     "type": "Component",
@@ -133,32 +125,17 @@
                             "editableHeaderContent": false,
                             "entitySet": "Teachers"
                         }
-                    },
-                    "controlAggregation": "midColumnPages",
-                    "contextPattern": "/Teachers({key})"
+                    }
                 }
-            },
-            "config": {
-                "flexibleColumnLayout": {
-                    "defaultTwoColumnLayoutType": "TwoColumnsBeginExpanded"
-                },
-                "routerClass": "sap.f.routing.Router"
             }
-        },
-        "extends": {
-            "extensions": {
-                "sap.ui.controllerExtensions": {}
-            }
-        },
-        "rootView": {
-            "viewName": "sap.fe.templates.RootContainer.view.Fcl",
-            "type": "XML",
-            "async": true,
-            "id": "appRootView"
         }
     },
     "sap.fiori": {
         "registrationIds": [],
         "archeType": "transactional"
+    },
+    "sap.cloud": {
+        "public": true,
+        "service": "fieldroute"
     }
 }

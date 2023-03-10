@@ -29,7 +29,6 @@
                     <ReferentialConstraint Property="school_ID" ReferencedProperty="ID"/>
                 </NavigationProperty>
                 <Property Name="school_ID" Type="Edm.Guid"/>
-                <Property Name="schoolName" Type="Edm.String" MaxLength="50"/>
                 <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="true"/>
                 <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
                 <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
@@ -79,9 +78,6 @@
                     </Record>
                 </Annotation>
             </Annotations>
-            <Annotations Target="MyService.Teachers/ID">
-                <Annotation Term="UI.Hidden" Bool="true"/>
-            </Annotations>
             <Annotations Target="MyService.Teachers/IsActiveEntity">
                 <Annotation Term="UI.Hidden" Bool="true"/>
             </Annotations>
@@ -92,9 +88,6 @@
                 <Annotation Term="UI.Hidden" Bool="true"/>
             </Annotations>
             <Annotations Target="MyService.Teachers/DraftAdministrativeData">
-                <Annotation Term="UI.Hidden" Bool="true"/>
-            </Annotations>
-            <Annotations Target="MyService.Schools/ID">
                 <Annotation Term="UI.Hidden" Bool="true"/>
             </Annotations>
             <Annotations Target="MyService.DraftAdministrativeData">

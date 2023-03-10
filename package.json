@@ -1,68 +1,88 @@
 {
-  "name": "help",
-  "version": "1.0.0",
-  "description": "A simple CAP project.",
-  "repository": "<Add your repository here>",
-  "license": "UNLICENSED",
-  "private": true,
-  "dependencies": {
-    "@sap/cds": "^6",
-    "express": "^4"
-  },
-  "devDependencies": {
-    "@sap/ux-specification": "^1.102.16",
-    "sqlite3": "^5.0.4"
-  },
-  "scripts": {
-    "start": "cds run",
-    "watch-project1": "cds watch --open project1/webapp/index.html?sap-ui-xx-viewCache=false",
-    "watch-teachers": "cds watch --open teachers/webapp/index.html?sap-ui-xx-viewCache=false"
-  },
-  "engines": {
-    "node": "^16.15"
-  },
-  "eslintConfig": {
-    "extends": "eslint:recommended",
-    "env": {
-      "es2020": true,
-      "node": true,
-      "jest": true,
-      "mocha": true
+    "name": "help",
+    "version": "1.0.0",
+    "description": "A simple CAP project.",
+    "repository": "<Add your repository here>",
+    "license": "UNLICENSED",
+    "private": true,
+    "dependencies": {
+        "@sap/cds": "^6",
+        "@sap/xssec": "^3",
+        "express": "^4",
+        "hdb": "^0.19.0",
+        "passport": "^0"
     },
-    "globals": {
-      "SELECT": true,
-      "INSERT": true,
-      "UPDATE": true,
-      "DELETE": true,
-      "CREATE": true,
-      "DROP": true,
-      "CDL": true,
-      "CQL": true,
-      "CXL": true,
-      "cds": true
+    "devDependencies": {
+        "@sap/ux-specification": "^1.108.0",
+        "sqlite3": "^5.0.4",
+        "rimraf": "^3.0.2"
     },
-    "rules": {
-      "no-console": "off",
-      "require-atomic-updates": "off"
+    "scripts": {
+        "start": "cds run",
+        "watch-project1": "cds watch --open project1/webapp/index.html?sap-ui-xx-viewCache=false",
+        "watch-teachers": "cds watch --open teachers/webapp/index.html?sap-ui-xx-viewCache=false",
+        "watch-helpproject": "cds watch --open helpproject/webapp/index.html?sap-ui-xx-viewCache=false",
+        "undeploy": "cf undeploy help --delete-services --delete-service-keys --delete-service-brokers",
+        "build": "rimraf resources mta_archives && mbt build --mtar archive",
+        "deploy": "cf deploy mta_archives/archive.mtar --retries 1",
+        "deploy-p": "mbt build && cf deploy mta_archives/help_1.0.0.mtar --retries 1"
+    },
+    "engines": {
+        "node": "^16.15"
+    },
+    "eslintConfig": {
+        "extends": "eslint:recommended",
+        "env": {
+            "es2020": true,
+            "node": true,
+            "jest": true,
+            "mocha": true
+        },
+        "globals": {
+            "SELECT": true,
+            "INSERT": true,
+            "UPDATE": true,
+            "DELETE": true,
+            "CREATE": true,
+            "DROP": true,
+            "CDL": true,
+            "CQL": true,
+            "CXL": true,
+            "cds": true
+        },
+        "rules": {
+            "no-console": "off",
+            "require-atomic-updates": "off"
+        }
+    },
+    "sapux": [
+        "app/project1",
+        "app/project1",
+        "app/project1",
+        "app/project1",
+        "app/project1",
+        "app/project1",
+        "app/project1",
+        "app/project1",
+        "app/project1",
+        "app/project1",
+        "app/project1",
+        "app/project1",
+        "app/project1",
+        "app/project1",
+        "app/project1",
+        "app/project1",
+        "app/teachers",
+        "app/helpproject"
+    ],
+    "cds": {
+        "requires": {
+            "db": {
+                "kind": "hana-cloud"
+            },
+            "auth": {
+                "kind": "xsuaa"
+            }
+        }
     }
-  },
-  "sapux": [
-    "app/project1",
-    "app/project1",
-    "app/project1",
-    "app/project1",
-    "app/project1",
-    "app/project1",
-    "app/project1",
-    "app/project1",
-    "app/project1",
-    "app/project1",
-    "app/project1",
-    "app/project1",
-    "app/project1",
-    "app/project1",
-    "app/project1",
-    "app/project1",
-    "app/teachers"
-  ]
 }
