@@ -1,53 +1,45 @@
 using MyService from '../srv/teachers-srv';
 
-// Títulos entidad Teachers
 annotate MyService.Teachers with {
     ID     @UI.Hidden;
     name   @title : '{i18n>teachersName}';
     //school @title : '{i18n>schoolName}';
 }
 
-// Títulos entidad Schools
 annotate MyService.Schools with {
     ID         @(
         UI.Hidden,
-        Common : {Text : 'schoolName'}
+        Common : {Text : schoolName}
     );
     schoolName @title : '{i18n>schoolName}'
 };
 
-
 annotate MyService.Teachers with @(UI : {
-    // Título en la tabla
     HeaderInfo       : {
-        TypeName       : '{i18n>teacher}', // Singular
-        TypeNamePlural : '{i18n>teachers}', // Plural
+        TypeName       : '{i18n>teacher}',
+        TypeNamePlural : '{i18n>teachers}',
     // Title: {
     //     $Type: 'UI.DataField',
     //     Value: name
     // }
     },
-    // Filtro mostrado encima de la tabla
     SelectionFields  : [school_ID],
-    // Campos mostrados en la tabla
     LineItem         : [
         {Value : name},
         {Value : school_ID}
     ],
-    // Ventana que aparece al darle al botón de crear
     Facets           : [{
         $Type  : 'UI.ReferenceFacet',
         Label  : 'Add Teacher',
         Target : '@UI.FieldGroup#Main'
     }],
-    // Campos a crear
     FieldGroup#Main : {Data : [
         {Value : name},
         {Value : school_ID}
     ]},
 });
 
-// Muestra - Value Help de Schools
+// Muestra
 annotate MyService.Teachers with {
     school @(Common : {
         Label : '{i18n>schoolName}',
@@ -73,5 +65,3 @@ annotate MyService.Teachers with {
         },
     })
 }
-
-using from './helpproject/annotations';
